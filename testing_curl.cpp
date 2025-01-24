@@ -5,26 +5,31 @@
 #include <curl/curl.h>
 #include <ctime>
 
-namespace curl_testing {
-    size_t writeCallback(void* Data, size_t Size_Data_Element, size_t Number_Data_Elements, void* Output_Stream) {
+namespace curl_testing 
+{
+    size_t writeCallback(void* Data, size_t Size_Data_Element, size_t Number_Data_Elements, void* Output_Stream) 
+    {
         return fwrite(Data, Size_Data_Element, Number_Data_Elements, (FILE*)Output_Stream);
     }
 
-    void curlDownload(const char* Url, const char* Output_File_Path) {
+    void curlDownload(const char* Url, const char* Output_File_Path) 
+    {
         CURL* curl;
         CURLcode res;
         FILE* p_file = nullptr;
         clock_t start, end;
 
         curl = curl_easy_init();
-        if (!curl) {
-            std::cerr << "Failed to initialize curl." << std::endl;
+        if (!curl) 
+        {
+            std::cerr << "Failed to initialize curl." << "\n";
             return;
         }
 
         p_file = fopen(Output_File_Path, "wb");
-        if (!p_file) {
-            std::cerr << "Failed to create file." << std::endl;
+        if (!p_file) 
+        {
+            std::cerr << "Failed to create file." << "\n";
             curl_easy_cleanup(curl);
             return;
         }
@@ -39,10 +44,11 @@ namespace curl_testing {
 
         end = clock();
 
-        if (res != CURLE_OK) {
-            std::cerr << "Curl Error: " << curl_easy_strerror(res) << std::endl;
+        if (res != CURLE_OK) 
+        {
+            std::cerr << "Curl Error: " << curl_easy_strerror(res) << "\n";
         } else {
-            std::cout << "Download successful in: " << (double)(end - start) / CLOCKS_PER_SEC << " seconds." << std::endl;
+            std::cout << "Download successful in: " << (double)(end - start) / CLOCKS_PER_SEC << " seconds." << "\n";
         }
 
         fclose(p_file);
